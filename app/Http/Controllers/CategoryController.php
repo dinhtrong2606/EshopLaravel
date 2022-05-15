@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $danhmuc = Category::orderBy('category_id', 'DESC')->paginate(5);
+        $danhmuc = Category::orderBy('category_id', 'DESC')->get();
         $category = Category::orderBy('category_id', 'DESC')->where('category_parent', 0)->get();
         return view('admin.category.index')->with(compact('danhmuc', 'category'));
     }

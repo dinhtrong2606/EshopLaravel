@@ -24,7 +24,7 @@
                     {{ session('success') }}
                 </div>
                 @endif
-                <table class="table table-striped b-t b-light">
+                <table class="table table-bordered b-t b-light" id="myTable">
                     <thead>
                         <tr>
                             <th><input type="checkbox" name="post[]"></th>
@@ -60,51 +60,9 @@
                     </tbody>
                 </table>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-
-                    <div class="col-sm-5 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-7 text-right text-center-xs">
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <nav aria-label="Page navigation">
-                                {!! $admin->links() !!}
-                            </nav>
-                        </ul>
-                    </div>
-
-
-
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </f ooter>
-                </d iv>
         </div>
     </div>
+</div>
 
 
 
@@ -137,4 +95,4 @@
 
 
 
-    @endsection
+@endsection

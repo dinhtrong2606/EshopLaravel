@@ -40,13 +40,15 @@ class SliderController extends Controller
             [
                 'slider_name' => 'required|max:100|unique:tbl_slider',
                 'slider_desc' => 'required',
+                'slider_script' => 'required',
                 'slider_status' => 'required',
-                'slider_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
+                'slider_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             ],
         );
 
         $slider = new Slider();
         $slider->slider_name = $data['slider_name'];
+        $slider->slider_script = $data['slider_script'];
         $slider->slider_status = $data['slider_status'];
         $slider->slider_desc = $data['slider_desc'];
 
@@ -63,7 +65,7 @@ class SliderController extends Controller
         return Redirect()->back()->with('status', 'Bạn đã thêm slider thành công');
     }
 
-    public function slider(Request $request)
+    public function slider_status(Request $request)
     {
         $data = $request->all();
         $slider = Slider::find($data['slider_id']);
@@ -107,12 +109,14 @@ class SliderController extends Controller
             [
                 'slider_name' => 'required|max:100r',
                 'slider_desc' => 'required',
+                'slider_script' => 'required',
                 'slider_status' => 'required',
             ],
         );
 
         $slider = Slider::find($slider_id);
         $slider->slider_name = $data['slider_name'];
+        $slider->slider_script = $data['slider_script'];
         $slider->slider_status = $data['slider_status'];
         $slider->slider_desc = $data['slider_desc'];
 

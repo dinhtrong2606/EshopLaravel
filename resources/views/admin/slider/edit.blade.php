@@ -36,6 +36,10 @@
                         <input type="text" name="slider_name" value="{{$slider->slider_name}}" class="form-control" placeholder="Tên slider">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Chú thích tên slider</label>
+                        <input type="text" name="slider_script" value="{{$slider->slider_script}}" class="form-control" placeholder="Chú thích tên slider">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Hình ảnh</label>
                         <input type="file" name="slider_image" class="form-control">
                         <img style="width: 200px;height: 120px" src="{{asset('uploads/slider/' .$slider->slider_image)}}" alt="">

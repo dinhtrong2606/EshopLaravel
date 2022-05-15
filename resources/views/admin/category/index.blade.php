@@ -18,7 +18,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered b-t b-light" id="myTable">
                 <thead>
                     <tr>
                         <th style="width:20px;">ID</th>
@@ -83,38 +83,6 @@
                 </tbody>
             </table>
         </div>
-        <footer class="panel-footer">
-            <div class="row">
-
-                <div class="col-sm-5 text-center">
-                    <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                </div>
-                <div class="col-sm-7 text-right text-center-xs">
-                    <ul class="pagination pagination-sm m-t-none m-b-none">
-                        {!! $danhmuc->links() !!}
-                    </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
 @endsection

@@ -24,9 +24,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
     <!-- bootstrap-css -->
     <link rel="stylesheet" href="{{url('backend/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url('backend/css/datatables.min.css')}}" />
     <!-- //bootstrap-css -->
     <!-- Custom CSS -->
     <link href="{{url('backend/css/style.css')}}" rel='stylesheet' type='text/css' />
+    <link href="{{url('backend/css/bootstrap-tagsinput.css')}}" rel='stylesheet' type='text/css'>
     <link href="{{url('backend/css/style-responsive.css')}}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -53,11 +55,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <!--logo start-->
             <div class="brand">
                 <a href="index.html" class="logo">
-                    VISITORS
+                    ADMIN
                 </a>
-                <div class="sidebar-toggle-box">
-                    <div class="fa fa-bars"></div>
-                </div>
             </div>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
@@ -67,9 +66,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="top-nav clearfix">
                 <!--search & user info start-->
                 <ul class="nav pull-right top-menu">
-                    <li>
-                        <input type="text" class="form-control search" placeholder=" Search">
-                    </li>
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -78,8 +74,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu extended logout">
-                            <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                             <li> <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -111,16 +105,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </a>
                         </li>
 
+                        @hasanyrole('Manage slider|Admin')
                         <li class="sub-menu">
                             <a href="javascript:;">
                                 <i class="fa fa-picture-o"></i>
                                 <span>Quản lí slider</span>
                             </a>
                             <ul class="sub">
+                                @can('Add Slider')
                                 <li><a href="{{route('slider.create')}}">Thêm Slider</a></li>
+                                @endcan
+                                @can('List Slider')
                                 <li><a href="{{route('slider.index')}}">Liệt kê Slider</a></li>
+                                @endcan
                             </ul>
                         </li>
+                        @endhasanyrole
 
                         @hasanyrole('Manage category|Admin')
                         <li class="sub-menu">
@@ -238,16 +238,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </li>
                         @endhasanyrole
 
-                        <li class="sub-menu">
-                            <a href="javascript:;">
-                                <i class="fa fa-gift"></i>
-                                <span>Video</span>
-                            </a>
-                            <ul class="sub">
-                                <li><a href="{{route('list_video')}}">Thêm và danh sách video</a></li>
-                            </ul>
-                        </li>
-
                         @role('Admin')
                         <li class="sub-menu">
                             <a href="javascript:;">
@@ -260,6 +250,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </ul>
                         </li>
                         @endrole
+
+                        @hasanyrole('Manage contact|Admin')
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-phone"></i>
+                                <span>Quản lí contact</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{url('/contact-list')}}">Liệt kê Contact</a></li>
+                            </ul>
+                        </li>
+                        @endhasanyrole
+
+                        @hasanyrole('Manage customer|Admin')
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-phone"></i>
+                                <span>Quản lí khách hàng</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{url('/list-customer')}}">Liệt kê khách hàng</a></li>
+                            </ul>
+                        </li>
+                        @endhasanyrole
                     </ul>
                 </div>
                 <!-- sidebar menu end-->
@@ -297,6 +311,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script type="text/javascript" src="{{url('backend/js/jquery.slimscroll.js')}}"></script>
     <script type="text/javascript" src="{{url('backend/js/jquery.scrollTo.js')}}"></script>
     <script type="text/javascript" src="{{url('backend/js/jquery.nicescroll.js')}}"></script>
+    <script type="text/javascript" src="{{url('backend/js/datatables.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('backend/js/bootstrap-tagsinput.js')}}"></script>
+    <script type="text/javascript" src="{{url('backend/js/bootstrap-tagsinput-angular.js')}}"></script>
     <script src="{{url('backend/js/raphael-min.js')}}"></script>
     <script type="text/javascript" src="{{url('backend/js/monthly.js')}}"></script>
     <script src="{{url('backend/js/bootstrap.js')}}"></script>
@@ -341,8 +358,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 CKEDITOR.replace('content_product');
 CKEDITOR.replace('content_post');
-</script>
 
+$(document).ready(function() {
+    $('#myTable').DataTable();
+});
+</script>
 <script>
 $('.trangthai').change(function() {
     var status = $(this).val();
@@ -430,7 +450,7 @@ $('.slider').change(function() {
         var thongbao = 'Bạn đã ẩn slider thành công';
     }
     $.ajax({
-        url: "{{url('/slider')}}",
+        url: "{{url('/slider-status')}}",
         method: "POST",
         data: {
             status: status,

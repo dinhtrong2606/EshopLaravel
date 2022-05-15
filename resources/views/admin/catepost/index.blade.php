@@ -18,7 +18,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered b-t b-light" id="myTable">
                 <thead>
                     <tr>
                         <th style="width:20px;">ID</th>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-sm-7 text-right text-center-xs">
                     <ul class="pagination pagination-sm m-t-none m-b-none">
-                        {!! $catepost->links() !!}
+                        
                     </ul>
                 </div>
             </div>

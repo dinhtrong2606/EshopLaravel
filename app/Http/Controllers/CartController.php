@@ -32,6 +32,7 @@ class CartController extends Controller
                         'product_price' => $data['cart_product_price'],
                         'product_qty' => $data['cart_product_qty'] + $value['product_qty'],
                         'product_image' => $data['cart_product_image'],
+                        'product_size' => $data['cart_product_size'],
                     );
                 }
             }
@@ -44,7 +45,7 @@ class CartController extends Controller
                     'product_price' => $data['cart_product_price'],
                     'product_qty' => $data['cart_product_qty'],
                     'product_image' => $data['cart_product_image'],
-
+                    'product_size' => $data['cart_product_size'],
                 );
                 $request->session()->put('cart', $cart);
             }
@@ -57,6 +58,7 @@ class CartController extends Controller
                 'product_price' => $data['cart_product_price'],
                 'product_qty' => $data['cart_product_qty'],
                 'product_image' => $data['cart_product_image'],
+                'product_size' => $data['cart_product_size'],
             );
         }
 
@@ -83,19 +85,7 @@ class CartController extends Controller
 
     public function giohang()
     {
-
-        $category = Category::orderBy('category_id', 'DESC')
-            ->where('category_status', 0)
-            ->get();
-
-        $brand = Brand::orderBy('brand_id', 'DESC')
-            ->where('brand_status', 0)
-            ->get();
-
-        $catepost = Catepost::orderBy('cate_post_id', 'DESC')->get();
-
-
-        return view('pages.cart.cart-ajax')->with(compact('category', 'brand', 'catepost'));
+        return view('pages.cart.shopping_cart');
     }
 
     // ma giam gia coupon

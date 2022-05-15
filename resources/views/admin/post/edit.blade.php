@@ -51,6 +51,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Tác giả bài viết</label>
+                        <input type="text" name="post_author" value="{{$post->post_author}}" class="form-control">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputPassword1">Mô tả bài viết</label>
                         <textarea style="resize:none" name="post_desc" rows="7" type="text" class="form-control"
                             id="exampleInputPassword1">{{$post->post_desc}}</textarea>

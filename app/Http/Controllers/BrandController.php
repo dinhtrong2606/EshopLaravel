@@ -11,7 +11,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class BrandController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
     }
     /**
@@ -56,7 +57,7 @@ class BrandController extends Controller
                 'brand_desc.required' => 'Vui lòng nhập mô tả thương hiệu',
                 'slugbrand.required' => 'Vui lòng nhập slug thương hiệu',
             ]
-            );
+        );
 
         $brand = new Brand();
         $brand->brand_name = $data['brand_name'];
@@ -113,7 +114,7 @@ class BrandController extends Controller
                 'brand_desc.required' => 'Vui lòng nhập mô tả thương hiệu',
                 'slugbrand.required' => 'Vui lòng nhập slug thương hiệu',
             ]
-            );
+        );
 
         $brand = Brand::find($id);
         $brand->brand_name = $data['brand_name'];
@@ -138,14 +139,15 @@ class BrandController extends Controller
     }
 
     //ajax brand_status 
-    public function thuonghieU(Request $request){
+    public function thuonghieU(Request $request)
+    {
         $data = $request->all();
         $brand = Brand::find($data['brand_id']);
         $brand->brand_status = $data['status'];
         $brand->save();
     }
 
-    public function export() 
+    public function export()
     {
         return Excel::download(new BrandExport, 'brand.xlsx');
     }

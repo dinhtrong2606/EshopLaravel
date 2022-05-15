@@ -18,6 +18,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -67,23 +68,11 @@ class CheckoutController extends Controller
 
     public function checkout()
     {
-        $category = Category::orderBy('category_id', 'DESC')
-            ->where('category_status', 0)
-            ->get();
-
-        $brand = Brand::orderBy('brand_id', 'DESC')
-            ->where('brand_status', 0)
-            ->get();
-
-        $catepost = Catepost::orderBy('cate_post_id', 'DESC')->get();
-
-        return view('pages.checkout.show_checkout')->with(compact('category', 'brand', 'catepost'));
+        return view('pages.checkout.checkout');
     }
 
     public function save_shipping(Request $request)
     {
-
-
         return Redirect()->route('payment');
     }
 
@@ -148,6 +137,7 @@ class CheckoutController extends Controller
             $order->payment_id = session('payment_id');
             $order->order_total = $val['total'];
             $order->order_status = 0;
+            $order->del_flg = 0;
             $order->save();
         }
         // $order_id = $order->order_id;
@@ -160,6 +150,7 @@ class CheckoutController extends Controller
             $order_detail->order_id = session('order_id');
             $order_detail->product_id = $value['product_id'];
             $order_detail->product_name = $value['product_name'];
+            $order_detail->product_size = $value['product_size'];
             $order_detail->coupon_code = $coupon_code;
             $order_detail->product_price = $value['product_price'];
             $order_detail->product_sales_quantity = $value['product_qty'];
@@ -254,7 +245,7 @@ class CheckoutController extends Controller
 
         $output .= '
         <div style="text-align: center">
-        <h2>Phiếu in đơn hàng - Eshop Store</h2>
+        <h2>Phiếu in đơn hàng - Male Fashion</h2>
       </div>
       <div class="container">
         <h3>Thông tin người nhận hàng</h3>
@@ -282,6 +273,7 @@ class CheckoutController extends Controller
           <th>Tên sản phẩm</th>
             <th>Phí ship</th>
             <th>Số lượng</th>
+            <th>Size</th>
             <th>Giá sản phẩm</th>
             <th>Thành tiền</th>
         </tr>';
@@ -310,6 +302,7 @@ class CheckoutController extends Controller
             <td>' . $value_pdf->product_name . '</td>
             <td>20,000 vnd</td>
             <td>' . $value_pdf->product_sales_quantity . '</td>
+            <td>' . $value_pdf->product_size . '</td>
             <td>' . number_format($value_pdf->product_price) . '</td>
             <td>' . number_format($total) . '</td>
         </tr>
@@ -381,26 +374,34 @@ class CheckoutController extends Controller
         return Redirect()->back()->with('status', 'Bạn đã xóa đơn hàng thành công!');
     }
 
-    //login account
-    public function login_account(Request $request)
-    {
-        $email_account = $request->email_account;
-        $password_account = md5($request->password_account);
+    public function checkout_success(){
+        $customer_id = session('customer_id');
+        $infoUser = Customer::where('customer_id', $customer_id)->first();
+        $orderMaxId = Order::where('customer_id', $customer_id)
+            ->orderBy('order_id', 'DESC')
+            ->value('order_id');
+        $order_status = Order::where('order_id', $orderMaxId)->first();
+        $orders = OrderDetail::orderBy('order_id')
+            ->where('order_id', $orderMaxId)
+            ->get();
+        
+        Mail::send('emails.order_success', compact('orders', 'order_status', 'infoUser'), function($email) use($infoUser){
+            $email->subject('Male Fashion - Thông báo xác nhận đặt hàng thành công');
+            $email->to($infoUser->customer_email, $infoUser->customer_name);
+        });
 
-        $customer = Customer::where('customer_email', $email_account)->where('customer_password', $password_account)->first();
-
-        if ($customer) {
-            $request->session()->put('customer_id', $customer->customer_id);
-            return Redirect()->route('check-out');
-        } else {
-            return Redirect()->route('login-checkout');
-        }
+        return view('pages.checkout.checkout_success')->with(compact('orders', 'order_status'));
     }
 
+    public function destroy_order(Request $request){
+        $data = $request->all();
+        $order = Order::find($data['order_id']);
+        $order->del_flg = 1;
+        $order->save();
 
-    public function logout_account(Request $request)
-    {
-        $request->session()->flush();
-        return Redirect()->route('login-checkout');
+        return response()->json([
+            'status' => 200,
+            'message' => "",
+        ]);
     }
 }

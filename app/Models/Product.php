@@ -11,6 +11,7 @@ class Product extends Model
     protected $fillable = [
         'category_id',
         'brand_id',
+        'product_tags',
         'product_name',
         'slugproduct',
         'product_desc',
@@ -37,5 +38,10 @@ class Product extends Model
     public function order_detail()
     {
         return $this->hasMany('App\Models\OrderDetail');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
     }
 }

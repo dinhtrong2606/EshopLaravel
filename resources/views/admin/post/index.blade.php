@@ -19,14 +19,13 @@
                     {{ session('status') }}
                 </div>
                 @endif
-                <table class="table table-striped b-t b-light table-responsive">
+                <table class="table table-bordered b-t b-light table-responsive" id="myTable">
                     <thead>
                         <tr>
                             <th style="width:20px;">ID</th>
                             <th>Tên bài viết</th>
                             <th>Hình ảnh</th>
                             <th>Danh mục</th>
-                            <th>Mô tả</th>
                             <th>Meta mô tả</th>
                             <th>Ngày cập nhật</th>
                             <th>Ngày tạo</th>
@@ -42,7 +41,6 @@
                             <th><img style="width: 130px;height:90px"
                                     src="{{asset('uploads/post/' .$row_post->post_image)}}" alt=""></th>
                             <th>{{$row_post->catepost->cate_post_name}}</th>
-                            <th>{{$row_post->post_desc}}</th>
                             <th>{{$row_post->post_meta_desc}}</th>
                             <th>{{$row_post->created_at}}</th>
                             <th>{{$row_post->updated_at}}</th>
@@ -79,22 +77,6 @@
                     </tbody>
                 </table>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-
-                    <div class="col-sm-5 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-7 text-right text-center-xs">
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            {!! $post->links() !!}
-                        </ul>
-                    </div>
-
-
-                    <a class="btn btn-primary" href="{{route('export-product')}}">Export</a>
-                </div>
-            </footer>
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered< b-t b-light">
                 <thead>
                     <tr>
                         <th>Tên khách hàng</th>
@@ -55,7 +55,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered b-t b-light">
                 <thead>
                     <tr>
                         <th>Tên người vận chuyển</th>
@@ -102,7 +102,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered b-t b-light">
                 <thead>
                     <tr>
                         <th><i class="fa fa-square"></i></th>
@@ -152,7 +152,7 @@
             @if($id->order_status==0)
             <form>
                 @csrf
-                <select style="width: 40%;" name="order_status" data-order_id="{{$row_order->order_id}}" class="form-control input-sm m-bot15 order_status">
+                <select style="width: 40%;height: 40px" name="order_status" data-order_id="{{$row_order->order_id}}" class="form-control input-sm m-bot15 order_status">
                     <option value="0" selected>Chưa xử lí</option>
                     <option value="1">Đơn hàng đã được xử lí | Chuẩn bị giao hàng</option>
                 </select>
@@ -160,7 +160,7 @@
             @else
             <form>
                 @csrf
-                <select style="width: 40%;" name="order_status" data-order_id="{{$row_order->order_id}}" class="form-control input-sm m-bot15 order_status">
+                <select style="width: 40%;height: 40px" name="order_status" data-order_id="{{$row_order->order_id}}" class="form-control input-sm m-bot15 order_status">
                 <option value="0">Chưa xử lí</option>
                 <option value="1" selected>Đơn hàng đã được xử lí | Chuẩn bị giao hàng</option>
             </select>

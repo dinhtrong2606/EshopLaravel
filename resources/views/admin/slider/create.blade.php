@@ -35,11 +35,15 @@
                         <input type="text" name="slider_name" value="{{old('slider_name')}}" class="form-control" placeholder="Tên slider">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Chú thích tên slider</label>
+                        <input type="text" name="slider_script" value="{{old('slider_script')}}" class="form-control" placeholder="Chú thích tên slider">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Hình ảnh</label>
                         <input type="file" name="slider_image" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Mô tả thương hiệu</label>
+                        <label for="exampleInputPassword1">Mô tả Slider</label>
                         <textarea style="resize:none" name="slider_desc" rows="7" type="text" class="form-control" id="exampleInputPassword1"></textarea>
                     </div>
                     <div class="form-group">

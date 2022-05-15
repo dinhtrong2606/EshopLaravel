@@ -6,6 +6,7 @@ use App\Models\Catepost;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -49,6 +50,7 @@ class PostController extends Controller
                 'post_meta_desc' => 'required',
                 'post_meta_keywords' => 'required',
                 'post_status' => 'required',
+                'post_author' => 'required',
                 'post_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
             ],
             [
@@ -57,7 +59,8 @@ class PostController extends Controller
                 'post_title.unique' => 'Tên bài viết này đã tồn tại. Vui lòng nhập tên bài viết khác',
                 'post_slug.required' => 'Vui lòng nhập slug bài viết',
                 'post_image.required' => 'Vui lòng chọn hình ảnh bài viết',
-                'post_content.' => 'Vui lòng nhập nội dung bài viết',
+                'post_content.required' => 'Vui lòng nhập nội dung bài viết',
+                'post_author.required' => 'Vui lòng nhập tác giả bài viết',
                 'post_desc.required' => 'Vui lòng nhập mô tả bài viết',
             ]
         );
@@ -66,11 +69,14 @@ class PostController extends Controller
         $post->post_title = $data['post_title'];
         $post->post_slug = $data['post_slug'];
         $post->post_desc = $data['post_desc'];
+        $post->post_author = $data['post_author'];
         $post->post_content = $data['post_content'];
         $post->post_status = $data['post_status'];
         $post->post_meta_desc = $data['post_meta_desc'];
         $post->post_meta_keywords = $data['post_meta_keywords'];
         $post->cate_post_id = $data['cate_post_id'];
+        $post->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $post->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         //them hinh anh san pham
         $get_image = $data['post_image'];
         $path = 'uploads/post/';
@@ -127,6 +133,7 @@ class PostController extends Controller
                 'post_meta_desc' => 'required',
                 'post_meta_keywords' => 'required',
                 'post_status' => 'required',
+                'post_author' => 'required',
             ],
             [
                 'post_title.required' => 'Vui lòng nhập tên bài viết',
@@ -136,6 +143,7 @@ class PostController extends Controller
                 'post_image.required' => 'Vui lòng chọn hình ảnh bài viết',
                 'post_content.' => 'Vui lòng nhập nội dung bài viết',
                 'post_desc.required' => 'Vui lòng nhập mô tả bài viết',
+                'post_author.required' => 'Vui lòng nhập tác giả bài viết',
             ]
         );
 
@@ -143,11 +151,13 @@ class PostController extends Controller
         $post->post_title = $data['post_title'];
         $post->post_slug = $data['post_slug'];
         $post->post_desc = $data['post_desc'];
+        $post->post_author = $data['post_author'];
         $post->post_content = $data['post_content'];
         $post->post_status = $data['post_status'];
         $post->post_meta_desc = $data['post_meta_desc'];
         $post->post_meta_keywords = $data['post_meta_keywords'];
         $post->cate_post_id = $data['cate_post_id'];
+        $post->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
         //them hinh anh san pham
         $get_image = $request->post_image;
         if ($get_image) {

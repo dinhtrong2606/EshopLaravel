@@ -33,21 +33,6 @@
                     <input type="submit" value="Submit" class="btn btn-primary">
                 </form>
             </div>
-
-
-
-
-
         </div>
 </section>
-
-
-
-
-
-
-
-
-
-
 @endsection

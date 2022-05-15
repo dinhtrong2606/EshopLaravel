@@ -10,12 +10,15 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatepostController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GallevyController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideosController;
+use App\Http\Controllers\LoginCustomerController;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +35,8 @@ use Illuminate\Support\Facades\Route;
 */
 //public
 Route::get('/', [PublicController::class, 'index'])->name('trang-chu');
-
+Route::get('/shop-detail', [PublicController::class, 'shop_detail'])->name('shop-detail');
+Route::get('/test-mail', [PublicController::class, 'test_mail']);
 //login
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -71,6 +75,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/edit-video', [VideosController::class, 'edit_video']);
     Route::post('/edit-image', [VideosController::class, 'edit_image']);
 
+    //contact
+    Route::get('/contact-list', [ContactController::class, 'index']);
+    Route::get('/delete-contact/{contact_id}', [ContactController::class, 'delete'])->name('contact_delete');
 
     //export excel
     Route::get('/export/brand', [BrandController::class, 'export'])->name('export-brand');
@@ -94,7 +101,6 @@ Route::group(['middleware' => ['auth']], function () {
     //Delete User and Roles
     Route::get('/delete-roles/{user_id}', [UserController::class, 'delete_roles'])->name('delete-roles');
 
-
     //coupon
     Route::resource('coupon', CouponController::class);
     Route::get('/delete-coupon/{coupon_id}', [CouponController::class, 'destroy'])->name('coupon_delete');
@@ -102,7 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //slider
     Route::resource('slider', SliderController::class);
-    Route::post('/slider', [SliderController::class, 'slider']);
+    Route::post('/slider-status', [SliderController::class, 'slider_status']);
     Route::get('/delete-slider/{slider_id}', [SliderController::class, 'delete_slider'])->name('delete-slider');
     Route::get('/edit-slider/{slider_id}', [SliderController::class, 'edit'])->name('slider_edit');
 
@@ -114,6 +120,10 @@ Route::group(['middleware' => ['auth']], function () {
     //user admin
     Route::post('/store-user', [UserController::class, 'store'])->name('user_store');
     Route::get('/create-user', [UserController::class, 'create'])->name('create_user');
+
+    //customer
+    Route::get('/list-customer', [CustomerController::class, 'index']);
+    Route::get('/delete-customer/{customer_id}', [CustomerController::class, 'destroy'])->name('customer_delete');
 
     //phan quyen
     Route::get('/divide-user/{id}', [UserController::class, 'permission_user'])->name('permission_user');
@@ -128,17 +138,22 @@ Route::group(['middleware' => ['auth']], function () {
 // //chuyen quyen nhanh voi laravel using once id
 // Route::get('/impersonate/all-user/{id}', [UserController::class, 'impersonate'])->name('convert-user');
 
-Route::group(['middleware' => ['auth', 'role:Manage order']], function () {
-    //manage order
-    Route::get('/manage-order', [CheckoutController::class, 'manage_order'])->name('manage-order');
-    Route::get('/manage-order-detail/{order_id}', [CheckoutController::class, 'manage_detail'])->name('manage-detail');
-    Route::get('/print-order/{id}', [CheckoutController::class, 'print_order'])->name('print-pdf');
-});
+// Route::group(['middleware' => ['auth', 'role:Manage order']], function () {
+//     //manage order
+//     Route::get('/manage-order', [CheckoutController::class, 'manage_order'])->name('manage-order');
+//     Route::get('/manage-order-detail/{order_id}', [CheckoutController::class, 'manage_detail'])->name('manage-detail');
+//     Route::get('/print-order/{id}', [CheckoutController::class, 'print_order'])->name('print-pdf');
+// });
 
 
 
 //show product category
 Route::get('/category-product/{slug}', [PublicController::class, 'product_category'])->name('product-category');
+
+//show video shop
+Route::get('/list-video.html', [PublicController::class, 'list_video_eshop'])->name('list_video_eshop');
+//watch video ajax
+Route::post('/watch-video-modal', [PublicController::class, 'watch_video']);
 
 //show product child category
 Route::get('/category-product-child/{slug}', [PublicController::class, 'product_category_child'])->name('product-category_child');
@@ -148,6 +163,16 @@ Route::get('/brand-product/{slug}', [PublicController::class, 'product_brand'])-
 
 //detail product
 Route::get('/detail-product/{slug}', [PublicController::class, 'product_detail'])->name('product-detail');
+Route::post('/add-product-viewed', [PublicController::class, 'add_product_viewed']);
+
+//comment product
+Route::post('/add-comment-product', [PublicController::class, 'add_comment']);
+Route::post('/edit-comment-product', [PublicController::class, 'edit_comment']);
+Route::post('/delete-comment-product', [PublicController::class, 'delete_comment']);
+
+//blog
+Route::get('/blog-list', [PublicController::class, 'blog_list']);
+Route::get('/blog-details/{slug}', [PublicController::class, 'blog_detail'])->name('blog_details');
 
 //cart
 Route::post('/update-quantity-product', [CartController::class, 'update_qty_product'])->name('update_quantity');
@@ -162,23 +187,46 @@ Route::post('/coupon-ajax', [CartController::class, 'coupon_save']);
 Route::post('/update-qty-ajax', [CartController::class, 'update_qty'])->name('update-qty');
 
 //checkout
-Route::get('/login-checkout', [CheckoutController::class, 'login_checkout'])->name('login-checkout');
-Route::post('/login-customer', [CheckoutController::class, 'save_login'])->name('save_login');
+// Route::get('/login-checkout', [CheckoutController::class, 'login_checkout'])->name('login-checkout');
+// Route::post('/login-customer', [CheckoutController::class, 'save_login'])->name('save_login');
 Route::post('/save-shipping', [CheckoutController::class, 'save_shipping'])->name('save_shipping');
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('check-out');
 Route::get('/payment', [CheckoutController::class, 'payment'])->name('payment');
-Route::post('/login-account', [CheckoutController::class, 'login_account'])->name('login-account');
-Route::get('/logout-account', [CheckoutController::class, 'logout_account'])->name('logout-account');
 Route::get('/delete-order/{orderId}', [CheckoutController::class, 'delete_order'])->name('delete-order');
 Route::post('/done-order', [CheckoutController::class, 'done_order']);
+Route::get('/checkout-success', [CheckoutController::class, 'checkout_success']);
+Route::post('/destroy-order', [CheckoutController::class, 'destroy_order']);
 
-
+//login customer
+Route::post('/login-account', [LoginCustomerController::class, 'login_account'])->name('login-account');
+Route::get('/login-customer', [LoginCustomerController::class, 'login_customer'])->name('login-customer');
+Route::get('/logout-account', [LoginCustomerController::class, 'logout_account'])->name('logout-account');
+Route::post('/signup-customer', [LoginCustomerController::class, 'signup_customer'])->name('signup_customer');
+Route::get('/forgot-password', [LoginCustomerController::class, 'forgot_password'])->name('forgot-password');
+Route::post('/confirm-password', [LoginCustomerController::class, 'confirm_password'])->name('confirm_password');
+Route::get('/reset-password', [LoginCustomerController::class, 'reset_password'])->name('reset-password');
+Route::post('/save-new-password', [LoginCustomerController::class, 'store_new_password'])->name('save-new-password');
 
 //payment
 Route::post('/order-place', [CheckoutController::class, 'order_place'])->name('order-place');
 
 //Search product
-Route::post('/search-product', [PublicController::class, 'search_product']);
+Route::post('/search-product', [PublicController::class, 'search_product'])->name('search_product');
+Route::post('/search-complete', [PublicController::class, 'search_complete']);
+
+//wishlist product
+Route::get('/wishlist-product', [PublicController::class, 'wishlist_product']);
+Route::post('/add-product-wishlist', [PublicController::class, 'add_product_wishlist']);
+
+//filter for category
+Route::post('/filter-product-category', [PublicController::class, 'filter_category']);
+//filter for brand
+Route::post('/filter-product-brand', [PublicController::class, 'filter_brand']);
+//filter for price
+Route::post('/filter-product-price', [PublicController::class, 'filter_price']);
+//see more product
+Route::post('/see-more-product', [PublicController::class, 'see_more']);
+Route::post('/see-less-product', [PublicController::class, 'see_less']);
 
 //login google
 Route::get('/login/google', [LoginController::class, 'redirectToGoogle'])->name('login.google');
@@ -191,3 +239,12 @@ Route::get('/login/facebook/callback', [LoginController::class, 'handleFacebookC
 //post list
 Route::get('/post-list/{slug}', [PublicController::class, 'post_list'])->name('post-list');
 Route::get('/{slug}.html', [PublicController::class, 'post_detail'])->name('post_detail');
+
+//tags product
+Route::get('tags/{product_tags}', [PublicController::class, 'tags_product'])->name('tags_product');
+Route::get('testss', [PublicController::class, 'test']);
+
+//contact
+Route::get('contact-page', [PublicController::class, 'contact']);
+Route::post('/store-contact', [PublicController::class, 'store_contact']);
+

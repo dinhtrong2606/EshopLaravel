@@ -15,7 +15,7 @@ class CatepostController extends Controller
      */
     public function index()
     {
-        $catepost = Catepost::orderBy('cate_post_id', 'DESC')->paginate(5);
+        $catepost = Catepost::orderBy('cate_post_id', 'DESC')->get();
         return view('admin.catepost.index')->with(compact('catepost'));
     }
 

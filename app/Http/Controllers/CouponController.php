@@ -13,7 +13,7 @@ class CouponController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $coupon = Coupon::orderBy('coupon_id', 'DESC')->get();
         return view('admin.coupon.index')->with(compact('coupon'));
     }
@@ -51,7 +51,7 @@ class CouponController extends Controller
                 'coupon_code.required' => 'Vui lòng nhập mã giảm giá',
                 'coupon_number.required' => 'Vui lòng nhập số lượng mã giảm giá',
             ]
-            );
+        );
 
         $coupon = new Coupon();
         $coupon->coupon_name = $data['coupon_name'];
@@ -106,6 +106,7 @@ class CouponController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Coupon::find($id)->delete();
+        return Redirect()->back()->with('status', 'Bạn đã xóa mã giảm giá thành công');
     }
 }

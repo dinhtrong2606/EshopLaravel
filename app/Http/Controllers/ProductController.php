@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $category = Product::with('category', 'brand')->orderBy('product_id', 'DESC')->paginate(5);
+        $category = Product::with('category', 'brand')->orderBy('product_id', 'DESC')->get();
         return view('admin.product.index')->with(compact('category'));
     }
 
@@ -59,6 +59,7 @@ class ProductController extends Controller
                 'product_status' => 'required',
                 'slugproduct' => 'required',
                 'product_exist' => 'required',
+                'product_tags' => 'required',
                 'product_image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
             ],
             [
@@ -81,6 +82,7 @@ class ProductController extends Controller
         $product->product_status = $data['product_status'];
         $product->product_price = $data['product_price'];
         $product->product_exist = $data['product_exist'];
+        $product->product_tags = $data['product_tags'];
         $product->brand_id = $data['brand_id'];
         $product->category_id = $data['category_id'];
         //them hinh anh san pham
@@ -100,7 +102,11 @@ class ProductController extends Controller
         $gallevy->product_id = $product_id->product_id;
         $gallevy->save();
 
-        return Redirect()->back()->with('status', 'Bạn đã thêm sản phẩm thành công');
+        $category = Product::with('category', 'brand')->orderBy('product_id', 'DESC')->get();
+
+        // return Redirect()->back()->with('status', 'Bạn đã thêm sản phẩm thành công');
+
+        return view('admin.product.index')->with(compact('category'), 'status', 'Bạn đã thêm sản phẩm thành công');
     }
 
     /**
@@ -147,6 +153,7 @@ class ProductController extends Controller
                 'product_desc' => 'required',
                 'product_status' => 'required',
                 'slugproduct' => 'required',
+                'product_tags' => 'required',
                 'product_exist' => 'required'
             ],
             [
@@ -169,6 +176,7 @@ class ProductController extends Controller
         $product->product_status = $data['product_status'];
         $product->product_price = $data['product_price'];
         $product->product_exist = $data['product_exist'];
+        $product->product_tags = $data['product_tags'];
         $product->brand_id = $data['brand_id'];
         $product->category_id = $data['category_id'];
         //them hinh anh san pham

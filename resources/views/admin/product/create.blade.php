@@ -43,12 +43,12 @@
                     <div class="form-group">
                         <label for="exampleInputPassword1">Mô tả sản phẩm</label>
                         <textarea style="resize:none" name="product_desc" rows="7" type="text" class="form-control"
-                            id="exampleInputPassword1"></textarea>
+                            id="exampleInputPassword1">{{old('product_desc')}}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Nội dung sản phẩm</label>
                         <textarea name="product_content" type="text" class="form-control"
-                            id="content_product"></textarea>
+                            id="content_product">{{old('product_content')}}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Giá sản phẩm</label>
@@ -56,13 +56,18 @@
                             placeholder="Giá sản phẩm">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Số sản phẩm</label>
+                        <label for="exampleInputEmail1">Tags sản phẩm:</label>
+                        <input type="text" data-role="tagsinput" name="product_tags" value="{{old('product_tags')}}"
+                            class="form-control" placeholder="Tags sản phẩm">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                         <input type="number" name="product_exist" value="{{old('product_exist')}}" class="form-control"
                             placeholder="Số lượng sản phẩm">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
-                        <input type="file" name="product_image" class="form-control">
+                        <input type="file" name="product_image" class="form-control" value="{{old('product_image')}}">
                     </div>
                     <div class="form-group">
                         <label>Thương hiệu sản phẩm</label>
@@ -97,8 +102,8 @@
                     </div>
 
 
-           
-         <button type="submit" class="btn btn-info">Submit</button>
+
+                    <button type="submit" class="btn btn-info">Submit</button>
                 </form>
             </div>
 

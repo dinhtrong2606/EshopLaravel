@@ -63,6 +63,11 @@
                             class="form-control">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Tags sản phẩm:</label>
+                        <input type="text" data-role="tagsinput" name="product_tags"
+                            value="{{$editproduct->product_tags}}" class="form-control">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
                         <input type="file" name="product_image" class="form-control">
                         <img style="width: 200px;height: 120px"

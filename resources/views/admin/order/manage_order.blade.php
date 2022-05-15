@@ -18,7 +18,7 @@
                 {{ session('status') }}
             </div>
             @endif
-            <table class="table table-striped b-t b-light">
+            <table class="table table-bordered b-t b-light">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -35,7 +35,7 @@
                         <td>{{$i++}}</td>
                         <td>{{$row_order->order_id}}</td>
                         <td>{{$row_order->created_at}}</td>
-                        <td>{{$row_order->order_status}}</td>
+                        <td>{{$row_order->order_status == 1 ? 'Đơn hàng đã được xử lí' : 'Đơn hàng chưa được xử lí'}}</td>
                         <td>
                         <a class="btn btn-primary" href="{{route('manage-detail', $row_order->order_id)}}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             <a onclick="return confirm('Bạn có thực sự muốn xóa đơn hàng này không ?')" class="delete" href="{{route('delete-order', [$row_order->order_id])}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
