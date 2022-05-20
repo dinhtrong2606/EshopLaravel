@@ -121,7 +121,9 @@
                             left top
                             no-repeat
                         `
-                    })
+                    });
+                    $('.number-product-wishlist').load('/ .number-product-wishlist');
+                    $('.number-product-wishlist').load('shop-detail .number-product-wishlist');
                 }
             });
         });
@@ -213,14 +215,18 @@
                             _token: _token,
                         },
                         success: function(response) {
-                            Swal.fire(
+                            if(response.status == 200){
+                                Swal.fire(
                                 'Deleted!',
                                 'Your comment has been deleted.',
                                 'success'
-                            )
-                            $('.comment'+comment_id).remove();
-                            $('#number-comment').empty().append(response['number_comment']);
-                            $('#number-comment2').empty().append(response['number_comment']);
+                                )
+                                $('.comment'+comment_id).remove();
+                                $('#number-comment').empty().append(response['number_comment']);
+                                $('#number-comment2').empty().append(response['number_comment']);
+                            }else{
+                                //console error
+                            }
                         }
                     });
                 }
@@ -392,6 +398,30 @@
     });
 
         /*-------------------
+		Delete product wishlist ajax 
+	    --------------------- */
+        $('.btn-delete-wishlist').on('click', function() {
+            var id = $(this).data('product_id');
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+            url: "{{url('/del-product-wishlist')}}",
+            method: "POST",
+            data: {
+                _token: _token,
+                id: id,
+            },
+            success: function(response) {
+                if(response.status == 200){
+                    $(".product_wishlist_" + id).remove();
+                    $('.number-product-wishlist').load('wishlist-product .number-product-wishlist');
+                }else{
+                    //console error
+                }
+            }
+        });
+    });
+
+        /*-------------------
             Save order ajax 
         --------------------- */
         $('.save-order').on('click', function() {
@@ -551,8 +581,9 @@
                         </div>
                         `;
                     });
-                    $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                    $('#no-result').empty().html('<p>Showing results</p>');
                     $('#filter-product').empty().append(html);
+                    $('.btn-container').addClass('d-none');
                 }
             });
         });
@@ -624,12 +655,14 @@
                             </div>
                             `;
                         });
-                        $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                        $('#no-result').empty().html('<p>Showing results</p>');
                         $('#filter-product').empty().append(html);
+                        $('.btn-container').addClass('d-none');
                     }else{
                         var noResult = `<p style="color: red"><i>Không có kết quả cho sản phẩm thuộc category <b>${category_nm}</b></i></p>`;
                         $('#no-result').empty().append(noResult);
                         $('#filter-product').empty();
+                        $('.btn-container').addClass('d-none');
                     }
                 }
             });
@@ -703,12 +736,14 @@
                             </div>
                             `;
                         });
-                        $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                        $('#no-result').empty().html('<p>Showing results</p>');
                         $('#filter-product').empty().append(html);
+                        $('.btn-container').addClass('d-none');
                     }else{
                         var noResult = `<p style="color: red"><i>Không có kết quả cho sản phẩm thuộc brand <b>${brand_nm}</b></i></p>`;
                         $('#no-result').empty().append(noResult);
                         $('#filter-product').empty();
+                        $('.btn-container').addClass('d-none');
                     }
                 }
             });
@@ -781,8 +816,9 @@
                             </div>
                             `;
                         });
-                        $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                        $('#no-result').empty().html('<p>Showing results</p>');
                         $('#filter-product').empty().append(html);
+                        $('.btn-container').addClass('d-none');
                     }else{
                         if(filter_price == 1){
                             var noResult = `<p style="color: red"><i>Không có kết quả cho sản phẩm thuộc trong khoảng từ <b>0 - 500.000</b></i></p>`;
@@ -798,6 +834,7 @@
                         
                         $('#no-result').empty().append(noResult);
                         $('#filter-product').empty();
+                        $('.btn-container').addClass('d-none');
                     }
                 }
             });
@@ -868,7 +905,7 @@
                             </div>
                             `;
                         });
-                        $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                        $('#no-result').empty().html('<p>Showing results</p>');
                         var seeLess = '<button type="button" class="see-less" id="toggle">See Less</button>';
                         $('.btn-container').empty().append(seeLess);
                         $('#filter-product').empty().append(html);
@@ -942,7 +979,7 @@
                             </div>
                             `;
                         });
-                        $('#no-result').empty().html('<p>Showing 1–12 of 126 results</p>');
+                        $('#no-result').empty().html('<p>Showing results</p>');
                         var seeLess = '<button type="button" class="see-more" id="toggle">See More</button>';
                         $('.btn-container').empty().append(seeLess);
                         $('#filter-product').empty().append(html);

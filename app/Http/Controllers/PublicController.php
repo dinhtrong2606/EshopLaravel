@@ -150,22 +150,26 @@ class PublicController extends Controller
             ->where('slugproduct', $slug)
             ->where('product_status', 0)
             ->first();
+        
+        if(empty($product)){
+            return view('errors.404');
+        }else{
+            $recommend_product = Product::with('category')
+                ->where('category_id', $product->category->category_id)
+                ->where('product_status', 0)
+                ->whereNotIn('product_id', [$product->product_id])
+                ->get();
 
-        $recommend_product = Product::with('category')
-            ->where('category_id', $product->category->category_id)
-            ->where('product_status', 0)
-            ->whereNotIn('product_id', [$product->product_id])
-            ->get();
+            $comments = Comment::where('product_id', $product->product_id)
+                ->where('comment_status', 1)
+                ->get();
 
-        $comments = Comment::where('product_id', $product->product_id)
-            ->where('comment_status', 1)
-            ->get();
+            $gallevy_product = Gallevy::where('product_id', $product->product_id)
+                ->take(3)
+                ->get();
 
-        $gallevy_product = Gallevy::where('product_id', $product->product_id)
-            ->take(3)
-            ->get();
-
-        return view('pages.product.product_details')->with(compact('product', 'recommend_product', 'gallevy_product', 'comments'));
+            return view('pages.product.product_details')->with(compact('product', 'recommend_product', 'gallevy_product', 'comments'));
+        }
     }
 
 
@@ -559,22 +563,26 @@ class PublicController extends Controller
         $post = Post::where('post_slug', $slug)
             ->where('post_status', 0)
             ->first();
+        
+        if(empty($post)){
+            return view('errors.404');
+        }else{
+            $post_id = $post->post_id;
 
-        $post_id = $post->post_id;
+            $posts = Post::find($post_id);
+            $posts->post_views = $posts->post_views + 1;
+            $posts->save();
 
-        $posts = Post::find($post_id);
-        $posts->post_views = $posts->post_views + 1;
-        $posts->save();
+            $next_post = Post::where('post_id' ,'>' , $post_id)
+                ->where('post_status', 0)
+                ->first();
 
-        $next_post = Post::where('post_id' ,'>' , $post_id)
-            ->where('post_status', 0)
-            ->first();
+            $prev_post = Post::where('post_id' ,'<' , $post_id)
+                ->where('post_status', 0)
+                ->first();
 
-        $prev_post = Post::where('post_id' ,'<' , $post_id)
-            ->where('post_status', 0)
-            ->first();
-
-        return view('pages.blog.blog_details')->with(compact('post', 'next_post', 'prev_post'));
+            return view('pages.blog.blog_details')->with(compact('post', 'next_post', 'prev_post'));
+        }
     }
 
     //contact
@@ -619,6 +627,24 @@ class PublicController extends Controller
             'status' => 200,
             'data' => $products,
             'message' => "",
+        ]);
+    }
+
+    //delete product wishlist ajax
+    public function delete_product_wishlist(Request $request)
+    {
+        $data = session('product_wishlist');
+        $val = $request->all();
+        foreach ($data as $key => $value) {
+            if ($value['product_id'] == $val['id']) {
+                unset($data[$key]);
+            }
+        }
+        $request->session()->put('product_wishlist', $data);
+
+        return response()->json([
+            'status' => 200,
+            'message' => '',
         ]);
     }
 }

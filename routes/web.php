@@ -217,6 +217,7 @@ Route::post('/search-complete', [PublicController::class, 'search_complete']);
 //wishlist product
 Route::get('/wishlist-product', [PublicController::class, 'wishlist_product']);
 Route::post('/add-product-wishlist', [PublicController::class, 'add_product_wishlist']);
+Route::post('/del-product-wishlist', [PublicController::class, 'delete_product_wishlist']);
 
 //filter for category
 Route::post('/filter-product-category', [PublicController::class, 'filter_category']);

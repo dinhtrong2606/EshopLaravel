@@ -101,14 +101,14 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li><a href="{{route('trang-chu')}}">Home</a></li>
-                            <li><a href="{{route('shop-detail')}}">Shop</a></li>
+                            <li><a href="{{ route('trang-chu') }}">Home</a></li>
+                            <li><a href="{{ route('shop-detail') }}">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="{{url('/blog-list')}}">Blog List</a></li>
-                                    <li><a href="{{url('contact-page')}}">Contact</a></li>
+                                    <li><a href="{{ url('/shop-detail') }}">Shop Details</a></li>
+                                    <li><a href="{{ url('/gio-hang-ajax') }}">Shopping Cart</a></li>
+                                    <li><a href="{{ url('/blog-list') }}">Blog List</a></li>
+                                    <li><a href="{{ url('contact-page') }}">Contact</a></li>
                                 </ul>
                             </li>
                             <li><a href="{{url('/blog-list')}}">Blog</a></li>
@@ -118,7 +118,13 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="{{url('/wishlist-product')}}"><img src="{{url('frontend/images/icon/heart.png')}}" alt=""></a>
+                        <a class="number-product-wishlist" href="{{url('/wishlist-product')}}"><img src="{{url('frontend/images/icon/heart.png')}}" alt="">
+                            @if(session('product_wishlist'))
+                            <span style="margin: -15px 9px;background-color: red;color: white" class="badge badge-warning" id="lblCartCount">{{count(session('product_wishlist'))}}</span>
+                            @else
+                            <span  class="badge badge-warning" id="lblCartCount"></span>
+                            @endif
+                        </a>
                         <a class="number-product-cart" href="{{route('gio-hang')}}"><img src="{{url('frontend/images/icon/cart.png')}}" alt="">
                             @if(session('cart'))
                             <span style="margin: -15px 9px;background-color: red;color: white" class="badge badge-warning" id="lblCartCount">{{count(session('cart'))}}</span>

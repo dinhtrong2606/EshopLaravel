@@ -27,10 +27,10 @@
             <div class="row">
                 @if(session('product_wishlist'))
                     @foreach(session('product_wishlist') as $val_product_wishlist)
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6 product_wishlist_{{ $val_product_wishlist['product_id'] }}">
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="{{url('uploads/gallevy/' .$val_product_wishlist['product_image'] )}}">
-                                <span class="label">New</span>
+                                <span class="label"><a class="btn-delete-wishlist" data-product_id="{{$val_product_wishlist['product_id']}}" style="cursor: pointer;color: red">X</a></span>
                                 <ul class="product__hover">
                                     <li><a class="product-detail" data-product_id="{{$val_product_wishlist['product_id']}}" data-product_name="{{$val_product_wishlist['product_name']}}"
                                     data-product_price="{{$val_product_wishlist['product_price']}}" data-product_exist="{{$val_product_wishlist['product_exist']}}"
