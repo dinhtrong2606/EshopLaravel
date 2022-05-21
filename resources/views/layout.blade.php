@@ -240,6 +240,7 @@
             var cart_product_price = $(this).data('product_price');
             var cart_product_image = $(this).data('product_image');
             var cart_product_exist = $(this).data('product_exist');
+            var product_slug = $(this).data('product_slug');
             var cart_product_qty = $('input[name="product_qty"]').val();
             var cart_product_size = $("input[name='product_size']:checked").val() ? $("input[name='product_size']:checked").val() : 's';
             var _token = $('meta[name="csrf-token"]').attr('content');
@@ -267,7 +268,7 @@
                     timer: 1500
                     })
                     $('.number-product-cart').load('/ .number-product-cart');
-                    $('.number-product-cart').load('shop-detail .number-product-cart');
+                    $('.number-product-cart').load('shop-detail/'+product_slug+' .number-product-cart');
                 }
             });
         });

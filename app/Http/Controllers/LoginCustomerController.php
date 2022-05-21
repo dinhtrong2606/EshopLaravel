@@ -77,8 +77,8 @@ class LoginCustomerController extends Controller
     public function confirm_password(Request $request){
         $email_account = $request->user_email;
         $confirm_password = Customer::where('customer_email', $email_account)->first();
-        $customer_id = $confirm_password->customer_id;
         if ($confirm_password) {
+            $customer_id = $confirm_password->customer_id;
             return view('pages.account.reset_password')->with(compact('customer_id'));
         } else {
             return Redirect()->back()->with('status', 'Địa chỉ email không tồn tại. Vui lòng nhập lại!');

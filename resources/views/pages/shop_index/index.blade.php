@@ -40,7 +40,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     @foreach($category as $val_category)
-                                                    <li><a class="category" style="cursor:pointer" data-category_nm="{{$val_category->category_name}}" data-category_id="{{$val_category->category_id}}">{{$val_category->category_name}} (20)</a></li>
+                                                    <li><a class="category" style="cursor:pointer" data-category_nm="{{$val_category->category_name}}" data-category_id="{{$val_category->category_id}}">{{$val_category->category_name}}</a></li>
                                                     @endforeach
                                                 </ul>
                                             </div>

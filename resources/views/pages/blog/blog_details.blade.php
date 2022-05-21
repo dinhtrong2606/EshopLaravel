@@ -11,7 +11,6 @@
                             <li>By {{$post->post_author}}</li>
                             <li>{{$post->updated_at->toDayDateTimeString()}}</li>
                             <li>Views: {{$post->post_views}}</li>
-                            <li>8 Comments</li>
                         </ul>
                     </div>
                 </div>

@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <a class="primary-btn add-to-cart-detail" style="color: white;cursor: pointer" data-product_id="{{$product->product_id}}"
-                                data-product_name="{{$product->product_name}}" data-product_price="{{$product->product_price}}"
+                                data-product_name="{{$product->product_name}}" data-product_price="{{$product->product_price}}" data-product_slug="{{ $product->slugproduct }}"
                                 data-product_exist="{{$product->product_exist}}" data-product_image="{{$product->product_image}}">add to cart</a>
                             </div>
                             <div class="product__details__last__option">
